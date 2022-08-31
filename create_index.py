@@ -4,7 +4,7 @@ import json
 import requests
 
 res = requests.get(
-    "https://api.dart.dev/stable/2.16.2/index.json"
+    "https://api.dart.dev/stable/2.18.0/index.json"
 )  # official Flutter docs index; currently contains about 62k indices
 
 if res.ok:
