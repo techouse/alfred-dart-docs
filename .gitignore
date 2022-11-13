@@ -15,3 +15,5 @@ bin/*_cache/
 sign.sh
 .python-version
 index.json
+
+.env

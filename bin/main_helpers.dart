@@ -3,8 +3,8 @@ part of 'main.dart';
 final AlfredWorkflow _workflow = AlfredWorkflow();
 
 final AlfredUpdater _updater = AlfredUpdater(
-  githubRepositoryUrl: Config.githubRepositoryUrl,
-  currentVersion: Config.version,
+  githubRepositoryUrl: Uri.parse(Env.githubRepositoryUrl),
+  currentVersion: Env.appVersion,
   updateInterval: Duration(days: 7),
 );
 
@@ -13,7 +13,7 @@ const _updateItem = AlfredItem(
   subtitle: 'Press <enter> to auto-update to a new version of this workflow.',
   arg: 'update:workflow',
   match:
-  'Auto-Update available! Press <enter> to auto-update to a new version of this workflow.',
+      'Auto-Update available! Press <enter> to auto-update to a new version of this workflow.',
   icon: AlfredItemIcon(path: 'alfredhatcog.png'),
   valid: true,
 );
@@ -35,24 +35,24 @@ Future<void> _performSearch(String query) async {
       snapshot.hits
           .map(
             (snapshot) => SearchResult.fromJson(snapshot.data),
-      )
+          )
           .map(
             (result) => AlfredItem(
-          uid: result.objectID,
-          title: '${result.name} ${result.type}',
-          subtitle: result.enclosedBy != null
-              ? 'from ${result.enclosedBy!["name"]}'
-              : '',
-          arg: result.href,
-          text: AlfredItemText(
-            copy: result.href,
-            largeType: result.qualifiedName,
-          ),
-          quickLookUrl: result.href,
-          icon: AlfredItemIcon(path: 'icon.png'),
-          valid: true,
-        ),
-      )
+              uid: result.objectID,
+              title: '${result.name} ${result.type}',
+              subtitle: result.enclosedBy != null
+                  ? 'from ${result.enclosedBy!["name"]}'
+                  : '',
+              arg: result.href,
+              text: AlfredItemText(
+                copy: result.href,
+                largeType: result.qualifiedName,
+              ),
+              quickLookUrl: result.href,
+              icon: AlfredItemIcon(path: 'icon.png'),
+              valid: true,
+            ),
+          )
           .toList(),
     );
     _workflow.addItems(items.items);
