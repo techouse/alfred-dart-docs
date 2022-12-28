@@ -1,7 +1,7 @@
 name: dart_docs_alfred_workflow
 description: Search the Dart documentation using Alfred
 
-version: 1.0.5
+version: 1.0.6
 
 publish_to: 'none'
 
