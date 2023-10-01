@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 import json
-
 import requests
 
 res = requests.get(
-    "https://api.dart.dev/stable/3.0.2/index.json"
+    "https://api.dart.dev/stable/3.1.3/index.json"
 )  # official Dart docs index; currently contains about 12.75k indices
 
 if res.ok:
@@ -29,18 +28,44 @@ if res.ok:
         "top-level constant": 5,
     }
 
-    index = [
-        {
-            **el,
-            **{
-                "weight": filters[el["type"]] - 1
-                if el["name"].startswith("dart:")
-                else filters[el["type"]]
-            },
-        }
-        for el in data
-        if el["type"] in filters.keys()
-    ]
+    # index of kinds
+    kinds = {
+        0: "accessor",
+        1: "constant",
+        2: "constructor",
+        3: "class",
+        4: "dynamic",
+        5: "enum",
+        6: "extension",
+        7: "function",
+        8: "library",
+        9: "method",
+        10: "mixin",
+        11: "Never",
+        12: "package",
+        13: "parameter",
+        14: "prefix",
+        15: "property",
+        16: "SDK",
+        17: "topic",
+        18: "top-level constant",
+        19: "top-level property",
+        20: "typedef",
+        21: "type parameter",
+    }
+
+    index = []
+
+    for el in data:
+        if "kind" in el and el["kind"] in kinds:
+            el["type"] = kinds[el["kind"]]
+            el["weight"] = el["kind"]
+            del el["kind"]
+            if "enclosedBy" in el:
+                if "kind" in el["enclosedBy"]:
+                    el["enclosedBy"]["type"] = kinds[el["enclosedBy"]["kind"]]
+                    del el["enclosedBy"]["kind"]
+        index.append(el)
 
     with open("index.json", "w") as out_fh:
         json.dump(index, out_fh)
