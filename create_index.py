@@ -3,7 +3,7 @@ import json
 import requests
 
 res = requests.get(
-    "https://api.dart.dev/stable/3.1.3/index.json"
+    "https://api.dart.dev/stable/3.2.6/index.json"
 )  # official Dart docs index; currently contains about 12.75k indices
 
 if res.ok:
